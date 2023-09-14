@@ -1,0 +1,28 @@
+<!-- parking-available.component.html -->
+<div class="container">
+    <h2>Available Parking Slots</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>PID</th>
+                <th>Status</th>
+                <th>Available</th>
+                <th>Slots(Hours/Day)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cpa of parkingData">
+                <td>{{ cpa.pid }}</td>
+                <td>{{ cpa.Status ? 'Occupied' : 'available' }}</td>
+                <td>{{ cpa.available | date:'dd/MM/yyyy' }}</td>
+                <td>
+                    <select [(ngModel)]="cpa.selectedSlot" name="slot" class="custom-select">
+                        <option *ngFor="let slot of trueSlots" [value]="slot">{{ slot }}</option>
+                      </select>
+                      
+                      
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
