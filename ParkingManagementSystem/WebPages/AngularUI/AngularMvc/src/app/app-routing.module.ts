@@ -4,6 +4,7 @@ import { ParkingAvailableComponent } from './Components/parking-available/parkin
 import { AvailabilityComponent } from './Components/availability/availability.component';
 import { LoginComponent } from './Components/login/login.component';
 import { RegisterComponent } from './Components/register/register.component';
+import { ReserveParkingComponent } from './Components/reserve-parking/reserve-parking/reserve-parking.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
   },
+  {
+    path: 'reserveparking',
+    component: ReserveParkingComponent,
+  }
 ];
 
 @NgModule({

@@ -15,6 +15,8 @@ import { ParkingAvailableComponent } from './Components/parking-available/parkin
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './Components/login/login.component';
 import { RegisterComponent } from './Components/register/register.component';
+import { ReserveParkingComponent } from './Components/reserve-parking/reserve-parking/reserve-parking.component';
+
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { RegisterComponent } from './Components/register/register.component';
     ParkingAvailableComponent,
     LoginComponent,
     RegisterComponent,
+    ReserveParkingComponent,
   ],
   imports: [
     BrowserModule,
