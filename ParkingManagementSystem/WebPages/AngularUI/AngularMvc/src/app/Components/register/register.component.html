@@ -1,0 +1,42 @@
+<div class="wrapper">
+    <div class="container">
+      <div class="col-left">
+        <div class="login-text">
+          <h2>Welcome </h2>
+          <p>Already have account?<br>It's totally free.</p>
+          <a class="btn" routerLink="">Sign In</a>
+        </div>
+      </div>
+      <div class="col-right">
+        <div class="login-form">
+          <h2>Sign Up</h2>
+          <form (ngSubmit)="signup()">
+            <p>
+              <label for="email">Email<span>*</span></label>
+              <input type="email" placeholder="Email" required [(ngModel)]="signupDto.email" name="email">
+            </p>
+            <p>
+              <label for="name">Name<span>*</span></label>
+              <input type="text" placeholder="Name" required [(ngModel)]="signupDto.name" name="name">
+            </p>
+            <p>
+              <label for="phoneNumber">Phone Number<span>*</span></label>
+              <input type="text" placeholder="Phone Number" required [(ngModel)]="signupDto.phoneNumber" name="phoneNumber">
+            </p>
+            <p>
+              <label for="password">Password<span>*</span></label>
+              <input type="password" placeholder="Password" required [(ngModel)]="signupDto.password" name="password">
+            </p>
+            <p>
+              <label for="role">Role<span>*</span></label>
+              <input type="text" placeholder="Role" required [(ngModel)]="signupDto.role" name="role">
+            </p>
+            <p>
+              <button type="submit">Sign Up</button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

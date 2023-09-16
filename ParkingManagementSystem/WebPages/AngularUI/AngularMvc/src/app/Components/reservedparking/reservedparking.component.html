@@ -1,0 +1,56 @@
+<!-- reservedparking.component.html -->
+
+<div class="container mt-5">
+    <h2>Reserve Parking</h2>
+    <form (submit)="reserveParking()">
+        <!-- Reserve Parking ID -->
+        <div class="form-group">
+            <label for="reserveParkingId">Reserve Parking ID</label>
+            <input type="text" class="form-control" id="reserveParkingId" placeholder="Enter Reserve Parking ID" name="reserveParkingId" [(ngModel)]="formData.rpid" required>
+        </div>
+
+        <!-- Email Address -->
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter Email Address" name="email" [(ngModel)]="formData.email" required>
+        </div>
+
+        <!-- Slot Number -->
+        <div class="form-group">
+            <label for="slotNumber">Slot Number</label>
+            <input type="text" class="form-control" id="slotNumber" placeholder="Enter Slot Number" name="slotNumber" [(ngModel)]="formData.slot" required>
+        </div>
+
+        <!-- Vehicle Number -->
+        <div class="form-group">
+            <label for="vehicleNumber">Vehicle Number</label>
+            <input type="text" class="form-control" id="vehicleNumber" placeholder="Enter Vehicle Number" name="vehicleNumber" [(ngModel)]="formData.vehicleNo" required>
+        </div>
+
+        <!-- ID Proof -->
+        <div class="form-group">
+            <label for="idProof">ID Proof</label>
+            <input type="text" class="form-control" id="idProof" placeholder="Enter ID Proof" name="idProof" [(ngModel)]="formData.identifications" required>
+        </div>
+
+        <!-- Name -->
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name" [(ngModel)]="formData.name" required>
+        </div>
+
+        <!-- Address -->
+        <div class="form-group">
+            <label for="address">Address</label>
+            <textarea class="form-control" id="address" rows="3" placeholder="Enter Address" name="address" [(ngModel)]="formData.address" required></textarea>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter Phone Number" name="phoneNumber" [(ngModel)]="formData.phoneNo" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Reserve Parking</button>
+    </form>
+</div>

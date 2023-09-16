@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  data:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: YourStrongPassword
+      ACCEPT_EULA: Y
+    ports:
+      - "1433:1433"
+    networks:
+      - mynetwork
+
+  authservice:
+    build:
+      context: ./AuthService 
+    ports:
+      - "8080:8080"
+    depends_on:
+      - data
+    networks:
+      - mynetwork
+
+  check-status-service:
+    build:
+      context: ./CheckStatus 
+    ports:
+      - "8081:8081"
+    depends_on:
+      - data
+    networks:
+      - mynetwork
+
+  reserved-parking-service:
+    build:
+      context: ./ReservedParking
+    ports:
+      - "8082:8082"
+    depends_on:
+      - data
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
