@@ -33,6 +33,10 @@ namespace CheckStatus.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
+                    b.Property<string>("location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Pid");
 
                     b.ToTable("MasterAvailability");

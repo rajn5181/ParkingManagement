@@ -14,12 +14,7 @@ export interface ReservedModel {
   slot: string;
   vehicleNo: string;
   identifications: string;
-  category: Category[];
+  category: string;
   name: string;
   address: string;
-}
-
-export interface Category {
-  tid: number;
-  categories: string;
 }

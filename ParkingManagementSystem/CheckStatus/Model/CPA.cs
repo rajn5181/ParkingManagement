@@ -16,5 +16,6 @@ namespace CheckStatus.Model
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Available { get; set; } // Changed property type to DateTime
+        public string location { get; set; }
     }
 }

@@ -30,6 +30,29 @@ namespace CheckStatus.Controllers
             var cpas = await _context.MasterAvailability.ToListAsync();
             return Ok(cpas);
         }
+        [HttpGet("search-by-location")]
+        public async Task<ActionResult<IEnumerable<CPA>>> SearchCPAsByLocation([FromQuery] string location)
+        {
+            if (string.IsNullOrWhiteSpace(location))
+            {
+                return BadRequest("Location parameter is required.");
+            }
+
+            // Assuming you have a DbSet for locations in your AppDbContext
+            var matchingCPAs = await _context.MasterAvailability
+                .Where(cpa => cpa.location.Contains(location) && cpa.Status)
+                .ToListAsync();
+
+            if (matchingCPAs.Count == 0)
+            {
+                return NotFound("No CPAs found for the specified location.");
+            }
+
+            // Here you can perform a web search using the 'location' parameter
+            // and incorporate the search results into the response if needed.
+
+            return Ok(matchingCPAs);
+        }
 
         [HttpGet("by-date/{date}")]
         public async Task<ActionResult<IEnumerable<CPA>>> GetCPAsByDate(string date)

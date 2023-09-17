@@ -30,6 +30,10 @@ namespace ReservedParking.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -57,40 +61,6 @@ namespace ReservedParking.Migrations
                     b.HasKey("Rpid");
 
                     b.ToTable("MasterReserved");
-                });
-
-            modelBuilder.Entity("ReservedParking.Models.TypesofVechicleModel", b =>
-                {
-                    b.Property<int>("Tid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Tid"));
-
-                    b.Property<string>("Categories")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RGPModelRpid")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Tid");
-
-                    b.HasIndex("RGPModelRpid");
-
-                    b.ToTable("VCategory");
-                });
-
-            modelBuilder.Entity("ReservedParking.Models.TypesofVechicleModel", b =>
-                {
-                    b.HasOne("ReservedParking.Models.RGPModel", null)
-                        .WithMany("Category")
-                        .HasForeignKey("RGPModelRpid");
-                });
-
-            modelBuilder.Entity("ReservedParking.Models.RGPModel", b =>
-                {
-                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

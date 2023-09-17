@@ -14,6 +14,7 @@ export interface Availability {
   Status: boolean;
   Slots: SlotModel[];
   Available: Date;
+  location: string;
 }
 
 export interface SlotModel {

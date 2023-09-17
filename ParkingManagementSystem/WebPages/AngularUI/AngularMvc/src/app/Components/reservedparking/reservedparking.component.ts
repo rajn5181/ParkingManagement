@@ -15,7 +15,7 @@ export class ReservedparkingComponent {
     slot: '',
     vehicleNo: '',
     identifications: '',
-    category: [],
+    category: '',
     name: '',
     address: '',
   };
@@ -25,11 +25,9 @@ export class ReservedparkingComponent {
   reserveParking() {
     this.reservedService.createReservedParking(this.formData).subscribe(
       (response) => {
-        // Handle success, e.g., show a success message
         console.log('Reservation successful:', response);
       },
       (error) => {
-        // Handle error, e.g., show an error message
         console.error('Error reserving parking:', error);
       }
     );

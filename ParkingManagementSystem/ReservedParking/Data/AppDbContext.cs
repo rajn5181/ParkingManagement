@@ -12,7 +12,6 @@ namespace ReservedParking.Data
         }
 
         public DbSet<RGPModel> MasterReserved { get; set; }
-        public DbSet<TypesofVechicleModel> VCategory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
