@@ -12,8 +12,8 @@ using PayemetServices.Data;
 namespace PayementService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230917022721_IntialMigrations")]
-    partial class IntialMigrations
+    [Migration("20230920161752_intial")]
+    partial class intial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,32 +25,6 @@ namespace PayementService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AuthService.Models.Dto.UserDto", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("UserDto");
-                });
-
             modelBuilder.Entity("PayemetServices.Models.PayementModel", b =>
                 {
                     b.Property<int>("PaymentID")
@@ -59,29 +33,32 @@ namespace PayementService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("RPID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserID1")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PaymentID");
-
-                    b.HasIndex("UserID1");
 
                     b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("PayemetServices.Models.PaymentHistoryModel", b =>
                 {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PaymentHistoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentHistoryID"));
 
                     b.Property<decimal>("AmountPaid")
                         .HasColumnType("decimal(18,2)");
@@ -89,13 +66,10 @@ namespace PayementService.Migrations
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PaymentHistoryID")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("PaymentHistoryID");
 
                     b.ToTable("PaymentHistories");
                 });
@@ -120,26 +94,6 @@ namespace PayementService.Migrations
                     b.HasIndex("PaymentID");
 
                     b.ToTable("PaymentReceipts");
-                });
-
-            modelBuilder.Entity("PayemetServices.Models.PayementModel", b =>
-                {
-                    b.HasOne("AuthService.Models.Dto.UserDto", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID1");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("PayemetServices.Models.PaymentHistoryModel", b =>
-                {
-                    b.HasOne("AuthService.Models.Dto.UserDto", "User")
-                        .WithMany()
-                        .HasForeignKey("ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PayemetServices.Models.PaymentReceiptModel", b =>

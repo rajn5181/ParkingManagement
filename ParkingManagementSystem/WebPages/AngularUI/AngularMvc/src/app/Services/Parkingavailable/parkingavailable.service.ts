@@ -7,7 +7,9 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ParkingavailableService {
-  private apiUrl = 'http://localhost:5009/api/cpa/by-date';
+  // private apiUrl = 'http://localhost:6001/api/cpa/by-date';
+  private apiUrl = 'https://localhost:5001/api/cpa/by-date';
+
   private locationiUrl = 'cpa/search-by-location';
   constructor(private http: HttpClient) {}
 

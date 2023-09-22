@@ -22,7 +22,7 @@ namespace PayemetServices.Data
         {
             modelBuilder.Entity<PaymentReceiptModel>()
          .HasOne(pr => pr.Payment)
-         .WithMany() // Add .WithMany() if Payment can have multiple PaymentReceipts
+         .WithMany() 
          .HasForeignKey(pr => pr.PaymentID);
         }
     }

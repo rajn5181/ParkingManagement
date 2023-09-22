@@ -39,7 +39,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-ApplyMigrations();
+//ApplyMigrations();
 app.Run();
 void ApplyMigrations()
 {

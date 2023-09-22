@@ -35,7 +35,6 @@ export class AuthenticationsService {
     return !!jwtToken; // Returns true if jwtToken is not null or undefined
   }
 
-  // Add a logout function if needed
   public logout(): void {
     localStorage.removeItem('jwtToken');
   }

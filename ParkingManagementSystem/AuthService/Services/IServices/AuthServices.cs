@@ -95,5 +95,51 @@ namespace AuthService.Services.IServices
                 return "Error encountered during registration";
             }
         }
+        public async Task<UpdateProfileDto> UpdateProfile(string userEmail, UpdateProfileDto model)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+
+            if (user == null)
+            {
+               
+                return new UpdateProfileDto
+                {
+                    IsSuccess = false,
+                    Message = "User not found"
+                };
+            }
+
+           
+            user.Email = model.Email;
+            user.PhoneNumber = model.PhoneNumber;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return new UpdateProfileDto
+                {
+                    IsSuccess = true,
+                    Message = "Profile updated successfully"
+                };
+            }
+            else
+            {
+               
+                return new UpdateProfileDto
+                {
+                    IsSuccess = false,
+                    Message = "Profile update failed"
+                };
+            }
+        }
+
+        public async Task<AppUserModel> FindUserByUsernameAsync(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            return user;
+        }
+
+
     }
 }

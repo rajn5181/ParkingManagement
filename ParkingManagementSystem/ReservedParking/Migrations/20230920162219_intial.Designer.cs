@@ -11,7 +11,7 @@ using ReservedParking.Data;
 namespace ReservedParking.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230916153949_intial")]
+    [Migration("20230920162219_intial")]
     partial class intial
     {
         /// <inheritdoc />

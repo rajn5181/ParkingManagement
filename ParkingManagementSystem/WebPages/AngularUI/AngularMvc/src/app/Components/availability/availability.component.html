@@ -1,9 +1,15 @@
-<mat-form-field class="example-full-width" style="margin-top: 90px;">
+<mat-form-field class="example-full-width" style="margin-top: 10px;">
   <mat-label>Choose a date</mat-label>
   <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" name="selectedDate">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
 <button mat-raised-button (click)="picker.open()">Open</button>
-<button mat-raised-button (click)="captureDate()">Check Date</button> 
+<button mat-raised-button (click)="captureDate()">Check Date</button>
 
+<!-- Input field for location search -->
+<mat-form-field class="example-full-width" style="margin-top: 20px;">
+  <mat-label>Enter Location</mat-label>
+  <input matInput [(ngModel)]="searchLocation" name="searchLocation">
+</mat-form-field>
+<button mat-raised-button (click)="searchByLocation(searchLocation)">Search by Location</button>

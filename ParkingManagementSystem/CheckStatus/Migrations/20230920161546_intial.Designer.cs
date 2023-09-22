@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CheckStatus.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230916163827_intial")]
+    [Migration("20230920161546_intial")]
     partial class intial
     {
         /// <inheritdoc />

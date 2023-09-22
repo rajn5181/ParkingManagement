@@ -6,6 +6,9 @@ import { LoginComponent } from './Components/login/login.component';
 import { RegisterComponent } from './Components/register/register.component';
 import { AuthGuard } from './Guard/authguard.guard';
 import { ReservedparkingComponent } from './Components/reservedparking/reservedparking.component';
+import { UserdashboardComponent } from './Components/userdashboard/userdashboard.component';
+import { LogoutComponent } from './Components/logout/logout.component';
+import { PaymentsComponent } from './Components/payments/payments.component';
 
 const routes: Routes = [
   {
@@ -27,6 +30,18 @@ const routes: Routes = [
   {
     path: 'reservedparking',
     component: ReservedparkingComponent,
+  },
+  {
+    path: 'dashboard',
+    component: UserdashboardComponent,
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent,
+  },
+  {
+    path: 'Payment',
+    component: PaymentsComponent,
   },
 ];
 

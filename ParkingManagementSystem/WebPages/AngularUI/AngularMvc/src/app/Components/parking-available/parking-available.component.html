@@ -4,24 +4,26 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>PID</th>
-                <th>Status</th>
                 <th>Available</th>
+                <th>Status</th>
+                <th>Locations</th>
                 <th>Slots(Hours/Day)</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let cpa of parkingData">
-                <td>{{ cpa.pid }}</td>
-                <td>{{ cpa.Status ? 'Occupied' : 'available' }}</td>
                 <td>{{ cpa.available | date:'dd/MM/yyyy' }}</td>
+                <td>{{ cpa.status ? 'Available' : 'Occupied' }}</td>
+                <td>{{ cpa.location }}</td>
                 <td>
                     <select [(ngModel)]="cpa.selectedSlot" name="slot" class="custom-select">
-                        <option *ngFor="let slot of trueSlots" [value]="slot">{{ slot }}</option>
-                      </select>
-                      
-                      
+                        <option *ngFor="let key of getSlotKeys(cpa.slots)" [value]="key">{{ key }}</option>
+                    </select>
+                    
+                </td>
+                <td class="text-right"> 
+                    <button class="btn btn-primary" (click)="bookParking(cpa.pid, cpa.selectedSlot)">Book</button>
                 </td>
             </tr>
         </tbody>

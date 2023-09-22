@@ -1,5 +1,7 @@
 ﻿using CheckStatus.Data;
 using CheckStatus.Model;
+using CheckStatus.Services;
+using CheckStatus.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,29 +9,27 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace CheckStatus.Controllers
 {
     [Route("api/cpa")]
     [ApiController]
     public class CPAController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ICPARepository _cpaRepository;
 
-        public CPAController(AppDbContext context)
+        public CPAController(ICPARepository cpaRepository)
         {
-            _context = context;
+            _cpaRepository = cpaRepository;
         }
 
-
-        private const string DateFormat = "dd/MM/yyyy";
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CPA>>> GetCPAs()
         {
-            var cpas = await _context.MasterAvailability.ToListAsync();
+            var cpas = await _cpaRepository.GetAllCPAs();
             return Ok(cpas);
         }
+
         [HttpGet("search-by-location")]
         public async Task<ActionResult<IEnumerable<CPA>>> SearchCPAsByLocation([FromQuery] string location)
         {
@@ -38,18 +38,12 @@ namespace CheckStatus.Controllers
                 return BadRequest("Location parameter is required.");
             }
 
-            // Assuming you have a DbSet for locations in your AppDbContext
-            var matchingCPAs = await _context.MasterAvailability
-                .Where(cpa => cpa.location.Contains(location) && cpa.Status)
-                .ToListAsync();
+            var matchingCPAs = await _cpaRepository.SearchCPAsByLocation(location);
 
-            if (matchingCPAs.Count == 0)
+            if (matchingCPAs.Count() == 0)
             {
                 return NotFound("No CPAs found for the specified location.");
             }
-
-            // Here you can perform a web search using the 'location' parameter
-            // and incorporate the search results into the response if needed.
 
             return Ok(matchingCPAs);
         }
@@ -57,14 +51,11 @@ namespace CheckStatus.Controllers
         [HttpGet("by-date/{date}")]
         public async Task<ActionResult<IEnumerable<CPA>>> GetCPAsByDate(string date)
         {
-            if (DateTime.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
+            if (DateTime.TryParseExact(date, "yyyy-MM-dd", null, DateTimeStyles.None, out DateTime parsedDate))
             {
-                var cpas = await _context.MasterAvailability
-                .Where(cpa => cpa.Available.Date == parsedDate.Date && cpa.Status)
-                .Include(cpa => cpa.Slots)
-                .ToListAsync();
+                var cpas = await _cpaRepository.GetCPAsByDate(parsedDate);
 
-                if (cpas.Count == 0)
+                if (cpas.Count() == 0)
                 {
                     return NotFound("No CPAs available for the specified date.");
                 }
@@ -77,12 +68,10 @@ namespace CheckStatus.Controllers
             }
         }
 
-
-
         [HttpGet("{id}")]
         public async Task<ActionResult<CPA>> GetCPA(string id)
         {
-            var cpa = await _context.MasterAvailability.FindAsync(id);
+            var cpa = await _cpaRepository.GetCPA(id);
 
             if (cpa == null)
             {
@@ -102,22 +91,9 @@ namespace CheckStatus.Controllers
 
             try
             {
-                // Parse the date string from the request body in the format "dd-MM-yyyy"
-                if (DateTime.TryParseExact(cpa.Available.ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
-                {
-                    cpa.Available = parsedDate; // Update the CPA object with the formatted date
+                var createdCPA = await _cpaRepository.CreateCPA(cpa);
 
-                    // Remove the time portion of the DateTime
-                    cpa.Available = cpa.Available.Date;
-
-                    _context.MasterAvailability.Add(cpa);
-                    await _context.SaveChangesAsync();
-                    return CreatedAtAction("GetCPA", new { id = cpa.Pid }, cpa);
-                }
-                else
-                {
-                    return BadRequest("Invalid date format. Please use the format 'dd-MM-yyyy'.");
-                }
+                return CreatedAtAction("GetCPA", new { id = createdCPA.Pid }, createdCPA);
             }
             catch (Exception ex)
             {
@@ -125,55 +101,51 @@ namespace CheckStatus.Controllers
             }
         }
 
-
-
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCPA(string id, [FromBody] CPA cpa)
+        public async Task<IActionResult> PutCPA(string id, [FromBody] CPA updatedCPA)
         {
-            if (id != cpa.Pid)
+            if (string.IsNullOrEmpty(id) || updatedCPA == null || id != updatedCPA.Pid)
             {
-                return BadRequest("ID mismatch.");
+                return BadRequest("Invalid input or ID mismatch.");
             }
+            var existingCPA = await _cpaRepository.GetCPA(id);
 
-            _context.Entry(cpa).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CPAExists(id))
-                {
-                    return NotFound("CPA not found.");
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCPA(string id)
-        {
-            var cpa = await _context.MasterAvailability.FindAsync(id);
-            if (cpa == null)
+            if (existingCPA == null)
             {
                 return NotFound("CPA not found.");
             }
 
-            _context.MasterAvailability.Remove(cpa);
-            await _context.SaveChangesAsync();
+           
+            existingCPA.Status = updatedCPA.Status;
+            existingCPA.Available = updatedCPA.Available;
+            existingCPA.location = updatedCPA.location;
+      
 
-            return NoContent();
+          
+            var updated = await _cpaRepository.UpdateCPA(id, existingCPA);
+
+            if (!updated)
+            {
+                return StatusCode(500, "Failed to update CPA in the database.");
+            }
+
+            // Return the updated CPA in the response
+            return Ok(existingCPA);
         }
 
-        private bool CPAExists(string id)
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCPA(string id)
         {
-            return _context.MasterAvailability.Any(e => e.Pid == id);
+            var deleted = await _cpaRepository.DeleteCPA(id);
+
+            if (!deleted)
+            {
+                return NotFound("CPA not found.");
+            }
+
+            return NoContent();
         }
     }
 }

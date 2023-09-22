@@ -16,6 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './Components/login/login.component';
 import { RegisterComponent } from './Components/register/register.component';
 import { ReservedparkingComponent } from './Components/reservedparking/reservedparking.component';
+import { UserdashboardComponent } from './Components/userdashboard/userdashboard.component';
+import { LogoutComponent } from './Components/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { ReservedparkingComponent } from './Components/reservedparking/reservedp
     LoginComponent,
     RegisterComponent,
     ReservedparkingComponent,
+    UserdashboardComponent,
+    LogoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +42,7 @@ import { ReservedparkingComponent } from './Components/reservedparking/reservedp
     DatePipe,
     HttpClientModule,
   ],
+
   providers: [],
   bootstrap: [AppComponent],
 })

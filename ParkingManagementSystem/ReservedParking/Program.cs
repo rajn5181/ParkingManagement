@@ -1,9 +1,12 @@
 using ReservedParking.Data;
 using Microsoft.EntityFrameworkCore;
+using ReservedParking.Services.IServices;
+using ReservedParking.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddScoped<IReservedService, ReservedService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -32,16 +35,16 @@ app.UseAuthorization();
 
 app.MapControllers();
 // Apply pending migrations on application startup
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var dbContext = services.GetRequiredService<AppDbContext>();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    var dbContext = services.GetRequiredService<AppDbContext>();
 
-    // Check for pending migrations and apply them
-    if (dbContext.Database.GetPendingMigrations().Any())
-    {
-        dbContext.Database.Migrate();
-    }
-}
+//    // Check for pending migrations and apply them
+//    if (dbContext.Database.GetPendingMigrations().Any())
+//    {
+//        dbContext.Database.Migrate();
+//    }
+//}
 
 app.Run();

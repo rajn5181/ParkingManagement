@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using AuthService.Models.Dto;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace PayemetServices.Models
 {
     public class PaymentHistoryModel
     {
+        [Key]
         public int PaymentHistoryID { get; set; }
 
         public int UserID { get; set; }
@@ -12,7 +13,5 @@ namespace PayemetServices.Models
 
         public DateTime PaymentDate { get; set; }
 
-        [ForeignKey("ID")]
-        public UserDto User { get; set; }
     }
 }

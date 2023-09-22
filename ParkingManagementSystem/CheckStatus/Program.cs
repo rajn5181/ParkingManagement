@@ -1,17 +1,21 @@
 using CheckStatus.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using CheckStatus.Services.IServices;
+using CheckStatus.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddScoped<ICPARepository, CPARepository>();
+builder.Services.AddScoped<ISlotRepository, SlotRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CheckStatus", Version = "v1" });
+});
 
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
@@ -23,8 +27,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CheckStatus v1"));
 }
 
 app.UseHttpsRedirection();
@@ -38,16 +43,16 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Apply pending migrations on application startup
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var dbContext = services.GetRequiredService<AppDbContext>();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    var dbContext = services.GetRequiredService<AppDbContext>();
 
-    // Check for pending migrations and apply them
-    if (dbContext.Database.GetPendingMigrations().Any())
-    {
-        dbContext.Database.Migrate();
-    }
-}
+//    // Check for pending migrations and apply them
+//    if (dbContext.Database.GetPendingMigrations().Any())
+//    {
+//        dbContext.Database.Migrate();
+//    }
+//}
 
 app.Run();

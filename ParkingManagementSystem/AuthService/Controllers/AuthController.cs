@@ -67,5 +67,47 @@ namespace AuthService.Controllers
             }
             return Ok(_responseDto);
         }
+        [HttpPut("update-profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto model)
+        {
+            try
+            {
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ResponseDto { IsSuccess = false, Message = "Invalid input data" });
+                }
+
+          
+                var updateProfileResult = await _authService.UpdateProfile(User.Identity.Name, model);
+
+                if (updateProfileResult.IsSuccess)
+                {
+                    return Ok(new ResponseDto { IsSuccess = true, Message = "Profile updated successfully" });
+                }
+                else
+                {
+                    return BadRequest(new ResponseDto { IsSuccess = false, Message = updateProfileResult.Message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ResponseDto { IsSuccess = false, Message = "Internal server error" });
+            }
+        }
+        [HttpGet("username/{username}")]
+        public async Task<IActionResult> GetUserByUsername(string username)
+        {
+            var user = await _authService.FindUserByUsernameAsync(username);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            return Ok(user); 
+        }
+
+
     }
 }

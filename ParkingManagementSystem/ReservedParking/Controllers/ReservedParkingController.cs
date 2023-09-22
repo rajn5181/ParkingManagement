@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ReservedParking.Data;
 using ReservedParking.Models;
+using ReservedParking.Services.IServices;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,26 +13,26 @@ namespace ReservedParking.Controllers
     [ApiController]
     public class ReservedParkingController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IReservedService _repository;
 
-        public ReservedParkingController(AppDbContext context)
+        public ReservedParkingController(IReservedService repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET: api/ReservedParking
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RGPModel>>> GetRGPModels()
         {
-            var rgpModels = await _context.MasterReserved.ToListAsync();
-            return rgpModels;
+            var rgpModels = await _repository.GetAllAsync();
+            return rgpModels.ToList();
         }
 
         // GET: api/ReservedParking/id
         [HttpGet("{id}")]
         public async Task<ActionResult<RGPModel>> GetRGPModel(string id)
         {
-            var rgpModel = await _context.MasterReserved.FindAsync(id);
+            var rgpModel = await _repository.GetByIdAsync(id);
 
             if (rgpModel == null)
             {
@@ -45,8 +46,7 @@ namespace ReservedParking.Controllers
         [HttpPost]
         public async Task<ActionResult<RGPModel>> PostRGPModel(RGPModel rgpModel)
         {
-            _context.MasterReserved.Add(rgpModel);
-            await _context.SaveChangesAsync();
+            await _repository.CreateAsync(rgpModel);
 
             return CreatedAtAction(nameof(GetRGPModel), new { id = rgpModel.Rpid }, rgpModel);
         }
@@ -60,23 +60,7 @@ namespace ReservedParking.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(rgpModel).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RGPModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _repository.UpdateAsync(rgpModel);
 
             return NoContent();
         }
@@ -85,21 +69,15 @@ namespace ReservedParking.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRGPModel(string id)
         {
-            var rgpModel = await _context.MasterReserved.FindAsync(id);
-            if (rgpModel == null)
+            if (!_repository.Exists(id))
             {
                 return NotFound();
             }
 
-            _context.MasterReserved.Remove(rgpModel);
-            await _context.SaveChangesAsync();
+            await _repository.DeleteAsync(id);
 
             return NoContent();
         }
-
-        private bool RGPModelExists(string id)
-        {
-            return _context.MasterReserved.Any(e => e.Rpid == id);
-        }
     }
+
 }

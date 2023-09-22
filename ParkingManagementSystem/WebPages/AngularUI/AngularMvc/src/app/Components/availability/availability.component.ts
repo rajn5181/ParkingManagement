@@ -7,6 +7,7 @@ import {
   SlotModel,
 } from 'src/app/Models/availability/availability.module'; // Import your model
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-availability',
@@ -17,11 +18,13 @@ export class AvailabilityComponent implements OnInit {
   selectedDate: Date;
   formatdate: string | undefined;
   parkingData: Availability[] = [];
+  searchLocation: string = '';
 
   constructor(
     private parkingService: ParkingavailableService,
     private router: Router,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private route: ActivatedRoute
   ) {
     this.selectedDate = new Date();
   }
@@ -34,15 +37,23 @@ export class AvailabilityComponent implements OnInit {
     const isoDate = this.selectedDate.toISOString();
     const datePart = isoDate.split('T')[0];
     this.formatdate = datePart;
-
-    // Call your service to fetch data here
     this.getParkingData(this.formatdate);
   }
 
   getParkingData(date: string) {
     this.parkingService.getDataByDate(date).subscribe(
       (data: Availability) => {
-        this.sharedService.setParkingData(data); // Store data in the service
+        const pid = data.Pid;
+        this.sharedService.setParkingData(data);
+        this.router.navigate(['/ParkingAvailable']);
+      },
+      (error) => {}
+    );
+  }
+  searchByLocation(location: string) {
+    this.parkingService.searchByLocation(location).subscribe(
+      (data: Availability[]) => {
+        this.sharedService.setParkingData(data);
         this.router.navigate(['/ParkingAvailable']);
       },
       (error) => {}
