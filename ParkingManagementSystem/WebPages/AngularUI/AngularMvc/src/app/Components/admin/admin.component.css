@@ -1,0 +1,89 @@
+/* Reset some default browser styles */
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+/* Set a background color for the entire page */
+body {
+  font-family: Arial, sans-serif; /* Choose an appropriate font */
+  background-color: #f8f9fa;
+  color: #333; /* Text color for the entire page */
+  line-height: 1.6; /* Line height for text */
+}
+
+/* Header styles */
+header {
+  background-color: #343a40;
+  color: #ffffff;
+  padding: 10px 0;
+  text-align: center;
+}
+
+/* Navigation bar styles */
+.navbar {
+  background-color: #343a40;
+}
+
+.navbar-dark .navbar-brand {
+  color: #ffffff;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #ffffff;
+}
+
+/* Main content container */
+.container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar styles */
+.list-group-item {
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+.list-group-item:hover {
+  background-color: #292b2c;
+}
+
+/* Footer styles */
+footer {
+  background-color: #343a40;
+  color: #ffffff;
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* Links styles */
+a {
+  color: #007bff; /* Link color */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Button styles */
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Add more styles as needed */
