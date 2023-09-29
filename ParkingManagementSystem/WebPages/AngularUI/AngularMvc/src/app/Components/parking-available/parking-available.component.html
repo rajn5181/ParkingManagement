@@ -1,0 +1,30 @@
+<!-- parking-available.component.html -->
+<div class="container">
+    <h2>Available Parking Slots</h2>
+    <table datatable [dtOptions]="dtoptions" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Available</th>
+                <th>Status</th>
+                <th>Locations</th>
+                <th>Slots(Hours/Day)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cpa of parkingData">
+                <td>{{ cpa.available | date:'dd/MM/yyyy' }}</td>
+                <td>{{ cpa.status ? 'Occupied' : 'Available' }}</td>
+                <td>{{ cpa.location }}</td>
+                <td>
+                    <select [(ngModel)]="cpa.selectedSlot" name="slot" class="custom-select">
+                        <option *ngFor="let key of getSlotKeys(cpa.slots)" [value]="key">{{ key }}</option>
+                    </select>
+                </td>
+                <td class="text-right"> 
+                    <button class="btn btn-primary" (click)="bookParking(cpa.pid, cpa.selectedSlot)">Book</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

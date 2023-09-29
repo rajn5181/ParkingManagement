@@ -1,0 +1,90 @@
+version: '3.4'
+
+services:
+  data:
+    container_name: my_sqlserver_container
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "password@123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - mynetwork
+    volumes:
+      - sqldata:/var/opt/mssql
+
+  authservice:
+    image: authservice
+    container_name: pms.authservice
+    build:
+      context: ./AuthService
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=data,1433;Database=ParkingDb;User ID=sa;Password=password@123;TrustServerCertificate=True;ColumnEncryptionSetting=Enabled
+    depends_on:
+      - data
+    restart: always
+    ports:
+      - "6002:80"
+    networks:
+      - mynetwork
+
+  checkstatusservice:
+    image: checkstatusservice
+    container_name: pms.checkstatusservice
+    build:
+      context: ./CheckStatus
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=data,1433;Database=ParkingDb;User ID=sa;Password=password@123;TrustServerCertificate=True;ColumnEncryptionSetting=Enabled
+    depends_on:
+      - data
+    restart: always
+    ports:
+      - "6001:80"
+    networks:
+      - mynetwork
+
+  reservedparkingservice:
+    image: reservedparkingservice
+    container_name: pms.reservedparkingservice
+    build:
+      context: ./ReservedParking
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=data,1433;Database=ParkingDb;User ID=sa;Password=password@123;TrustServerCertificate=True;ColumnEncryptionSetting=Enabled
+    depends_on:
+      - data
+    restart: always
+    ports:
+      - "6003:80"
+    networks:
+      - mynetwork
+
+  paymentservices:
+    image: paymentservices
+    container_name: pms.paymentservices
+    build:
+      context: ./PayementService
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=data,1433;Database=ParkingDb;User ID=sa;Password=password@123;TrustServerCertificate=True;ColumnEncryptionSetting=Enabled
+    depends_on:
+      - data
+    restart: always
+    ports:
+      - "6004:80"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+
+volumes:
+  sqldata:
+

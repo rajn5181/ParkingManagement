@@ -1,0 +1,69 @@
+<div class="wrapper background-image">
+  <div class="container">
+    <div class="col-left">
+      <div class="login-text">
+        <h2>Welcome</h2>
+        <div>Already have an account?<br>It's totally free.</div>
+        <a class="btn" routerLink="">Sign In</a>
+      </div>
+    </div>
+    <div class="col-right">
+      <div class="login-form">
+        <h2>Sign Up</h2>
+        <form [formGroup]="signupForm" (ngSubmit)="signup()">
+          <!-- ========================================================================= -->
+          <div>
+            <label for="email">Email<span>*</span></label>
+            <input type="email" placeholder="Email" formControlName="email">
+            <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)">
+              <div class="error-message" *ngIf="signupForm.get('email')?.hasError('required')">Email is required.</div>
+              <div class="error-message" *ngIf="signupForm.get('email')?.hasError('email')">Invalid email format.</div>
+            </div>
+          </div>
+          
+          <div>
+            <label for="name">Name<span>*</span></label>
+            <input type="text" placeholder="Name" formControlName="name">
+            <div *ngIf="signupForm.get('name')?.invalid && (signupForm.get('name')?.dirty || signupForm.get('name')?.touched)">
+              <div class="error-message" *ngIf="signupForm.get('name')?.hasError('required')">Name is required.</div>
+            </div>
+          </div>
+          
+          <div>
+            <label for="phoneNumber">Phone Number</label>
+            <input type="text" placeholder="Phone Number" formControlName="phoneNumber">
+            <div *ngIf="signupForm.get('phoneNumber')?.invalid && (signupForm.get('phoneNumber')?.dirty || signupForm.get('phoneNumber')?.touched)">
+              <div class="error-message" *ngIf="signupForm.get('phoneNumber')?.hasError('required')">Phone Number is required.</div>
+              <div class="error-message" *ngIf="signupForm.get('phoneNumber')?.hasError('pattern')">Invalid phone number format (only numbers allowed).</div>
+            </div>
+          </div>
+          
+          <div>
+            <label for="password">Password<span>*</span></label>
+            <input type="password" placeholder="Password" formControlName="password">
+            <div *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)">
+              <div class="error-message" *ngIf="signupForm.get('password')?.hasError('required')">Password is required.</div>
+            </div>
+          </div>
+          
+          <div>
+            <label for="role">Role<span>*</span></label>
+            <select formControlName="role">
+              <option value="user">user</option>
+              <!-- <option value="admin">admin</option> -->
+            </select>
+            <div *ngIf="signupForm.get('role')?.invalid && (signupForm.get('role')?.dirty || signupForm.get('role')?.touched)">
+              <div class="error-message" *ngIf="signupForm.get('role')?.hasError('required')">Role is required.</div>
+            </div>
+          </div>
+          
+
+          <!-- --------------------------------------------------------------------------------------- -->
+          <div>
+            <button type="submit" [disabled]="signupForm.invalid">Sign Up</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

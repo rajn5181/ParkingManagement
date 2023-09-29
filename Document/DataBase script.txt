@@ -1,0 +1,125 @@
+//To Fetch user data. 
+
+USE [PMSDb]
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[FetchUserDataByUserId]    Script Date: 9/27/2023 9:59:35 AM ******/
+
+SET ANSI_NULLS ON
+
+GO
+
+SET QUOTED_IDENTIFIER ON
+
+GO
+
+Create PROCEDURE [dbo].[FetchUserDataByUserId]
+
+    @UserId varchar(max)
+
+AS
+
+BEGIN
+
+    SELECT
+
+        MR.Name,
+
+		MR.Email,
+
+		MR.Address,
+
+		MR.Identifications,
+
+		MR.PhoneNo,
+
+		MR.Rpid,
+
+		MR.PKID,
+
+		MR.Slot,
+
+		MR.VehicleNo,
+
+		P.PaymentDate,
+
+		PR.ReceiptNumber,
+
+		P.Amount,
+
+		MA.location,
+
+		MA.Available
+
+    FROM
+
+        MasterReserved MR
+
+	inner join
+
+	MasterAvailability[MA] on MA.Pid=MR.PKID
+
+    INNER JOIN
+
+        Payments P ON MR.Rpid = P.RPID
+
+    INNER JOIN
+
+        PaymentReceipts PR ON PR.PaymentID = P.PaymentID
+
+    WHERE
+
+        P.UserID = @UserId;
+
+END;
+
+
+
+// To Fetch user profile. 
+
+USE [PMSDb]
+GO
+/****** Object:  StoredProcedure [dbo].[FetchUserProfileByUserId]    Script Date: 9/27/2023 9:59:44 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create PROCEDURE [dbo].[FetchUserProfileByUserId]
+    @UserEmail varchar(max)
+AS
+BEGIN
+    SELECT
+       A.Name,
+	   A.Email,
+	   A.PhoneNumber,
+	   A.UserName
+    FROM
+        AspNetUsers[A]
+    WHERE
+        A.Email = @UserEmail;
+END
+
+
+
+
+//To get admin pass
+
+USE [PMSDb]
+GO
+/****** Object:  StoredProcedure [dbo].[PMSGettingAdminPass]    Script Date: 9/27/2023 9:59:48 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create PROCEDURE [dbo].[PMSGettingAdminPass]
+    @UserId varchar(max)
+AS
+BEGIN
+    SELECT
+      A.PasswordHash
+    FROM
+      AspNetUsers[A]
+    WHERE
+        A.UserName =@UserId;
+END;

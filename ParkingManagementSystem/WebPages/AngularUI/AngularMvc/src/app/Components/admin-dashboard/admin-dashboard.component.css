@@ -1,0 +1,57 @@
+.card-img-top {
+    width: 150px;
+    height: 150px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+}
+/* styles.css */
+input[type="datetime-local"],
+input[type="text"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style the container */
+.col-md-4 {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 5px;
+    /* box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5); */
+}
+
+/* Style the form title */
+h2 {
+    color: #333;
+    font-size: 24px;
+}
+
+/* Style form labels */
+label {
+    font-weight: bold;
+    color: #555;
+}
+
+/* Style form inputs */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Style the submit button */
+input[type="submit"] {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Change button color on hover */
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}

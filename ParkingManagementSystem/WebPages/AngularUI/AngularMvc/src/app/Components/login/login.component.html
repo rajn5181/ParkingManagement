@@ -1,0 +1,33 @@
+<div class="wrapper background-image">
+    <div class="container">
+      <div class="col-left">
+        <div class="login-text">
+          <h2>Welcome Back</h2>
+          <p>Create your account.<br>It's totally free.</p>
+          <a class="btn" routerLink="register">Sign Up</a>
+        </div>
+      </div>
+      <div class="col-right">
+        <div class="login-form">
+          <h2>Login</h2>
+          <form (ngSubmit)="Login(loginDto)">
+            <p>
+              <label for="username">Username or email address<span>*</span></label>
+              <input type="text" placeholder="Username or Email" required [(ngModel)]="loginDto.username" name="username">
+            </p>
+            <p>
+              <label for="password">Password<span>*</span></label>
+              <input type="password" placeholder="Password" required [(ngModel)]="loginDto.Password" name="password">
+            </p>
+            <p>
+              <input type="submit" value="LogIn" />
+            </p>
+            <p>
+              <a routerLink="/adminlogin">Login Admin</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
